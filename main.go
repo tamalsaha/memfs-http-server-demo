@@ -1,13 +1,19 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/fs"
+	"log"
+	"net/http"
 
 	"gomodules.xyz/memfs"
 )
 
 func main() {
+	port := flag.String("p", "8100", "port to serve on")
+	flag.Parse()
+
 	rootFS := memfs.New()
 
 	err := rootFS.MkdirAll("dir1/dir2", 0777)
@@ -33,4 +39,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("%s\n", content)
+
+	http.Handle("/", http.FileServer(http.FS(rootFS)))
+	log.Fatal(http.ListenAndServe(":"+*port, nil))
 }
