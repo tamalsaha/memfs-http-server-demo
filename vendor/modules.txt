@@ -1,0 +1,3 @@
+# gomodules.xyz/memfs v0.0.1
+## explicit; go 1.17
+gomodules.xyz/memfs
